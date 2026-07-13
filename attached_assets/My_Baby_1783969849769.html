@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>For Favour 💛</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rose-gold:#e8b4b8;
+    --blush:#ffd8e4;
+    --deep-red:#a8324a;
+    --warm-gold:#e8c07d;
+    --bg-deep:#2b0f1a;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{
+    width:100%; height:100%;
+    overflow:hidden;
+    background: radial-gradient(ellipse at center, #3a1524 0%, #1c0a12 65%, #100609 100%);
+    font-family:'Poppins', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #stars{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+  }
+  .twinkle{
+    position:absolute;
+    width:2px; height:2px;
+    background:#fff;
+    border-radius:50%;
+    opacity:.6;
+    animation: tw 3s ease-in-out infinite;
+  }
+  @keyframes tw{
+    0%,100%{ opacity:.15; transform:scale(1); }
+    50%{ opacity:.9; transform:scale(1.6); }
+  }
+
+  #scene{
+    position:relative;
+    width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    z-index:2;
+  }
+
+  /* ---------- Intro balloon ---------- */
+  #intro{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:2.2rem;
+    transition: opacity .6s ease;
+  }
+  #intro.fade-out{
+    opacity:0;
+    pointer-events:none;
+  }
+  .hero-balloon-wrap{
+    position:relative;
+    cursor:pointer;
+    animation: bob 3.2s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0) rotate(-2deg); }
+    50%{ transform:translateY(-22px) rotate(2deg); }
+  }
+  .hero-balloon{
+    width: min(46vw, 240px);
+    height: min(58vw, 300px);
+    position:relative;
+    filter: drop-shadow(0 25px 40px rgba(0,0,0,.45));
+  }
+  .hero-balloon .body{
+    position:absolute;
+    inset:0;
+    border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+    background: radial-gradient(circle at 32% 28%, #ffe3ea 0%, #ff9fb8 28%, #e8567f 62%, #a8324a 100%);
+    box-shadow: inset -18px -25px 45px rgba(120,10,45,.55), inset 14px 18px 30px rgba(255,255,255,.35);
+  }
+  .hero-balloon .shine{
+    position:absolute;
+    top:14%; left:22%;
+    width:22%; height:16%;
+    background: rgba(255,255,255,.85);
+    border-radius:50%;
+    filter: blur(2px);
+  }
+  .hero-balloon .knot{
+    position:absolute;
+    bottom:-3%;
+    left:50%;
+    transform:translateX(-50%);
+    width:0; height:0;
+    border-left:10px solid transparent;
+    border-right:10px solid transparent;
+    border-top:16px solid #a8324a;
+  }
+  .hero-string{
+    width:2px;
+    height:110px;
+    margin:0 auto;
+    background: linear-gradient(#c98a8a, transparent);
+    opacity:.7;
+  }
+  .pop-label{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size: clamp(1.3rem, 4vw, 1.9rem);
+    color: var(--warm-gold);
+    text-shadow: 0 0 18px rgba(232,192,125,.8), 0 0 4px rgba(0,0,0,.5);
+    letter-spacing: 1px;
+    animation: glow 2s ease-in-out infinite;
+    text-align:center;
+    padding: 0 1rem;
+  }
+  @keyframes glow{
+    0%,100%{ opacity:.75; }
+    50%{ opacity:1; }
+  }
+
+  /* ---------- Burst ring on pop ---------- */
+  .burst-ring{
+    position:absolute;
+    width:20px; height:20px;
+    border-radius:50%;
+    border: 3px solid rgba(255,214,224,.9);
+    left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+    animation: ringOut .7s ease-out forwards;
+    z-index:5;
+  }
+  @keyframes ringOut{
+    0%{ width:20px; height:20px; opacity:1; border-width:4px;}
+    100%{ width:600px; height:600px; opacity:0; border-width:1px;}
+  }
+  .confetti-burst{
+    position:absolute;
+    left:50%; top:50%;
+    width:8px; height:14px;
+    border-radius:2px;
+    pointer-events:none;
+    z-index:5;
+  }
+
+  /* ---------- Floating balloon flood ---------- */
+  #floodLayer{
+    position:absolute;
+    inset:0;
+    z-index:4;
+    pointer-events:none;
+    overflow:visible;
+  }
+  .balloon{
+    position:absolute;
+    bottom:-260px;
+    width:70px;
+    height:88px;
+    pointer-events:auto;
+    cursor:pointer;
+    will-change: transform, opacity;
+  }
+  .balloon .b-body{
+    position:absolute;
+    inset:0;
+    border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+    box-shadow: inset -10px -14px 22px rgba(0,0,0,.28), inset 8px 10px 16px rgba(255,255,255,.35);
+  }
+  .balloon .b-shine{
+    position:absolute;
+    top:12%; left:20%;
+    width:26%; height:18%;
+    background: rgba(255,255,255,.75);
+    border-radius:50%;
+    filter: blur(1.5px);
+  }
+  .balloon .b-string{
+    position:absolute;
+    top:100%;
+    left:50%;
+    width:1.5px;
+    height:46px;
+    background: linear-gradient(rgba(255,255,255,.5), transparent);
+  }
+
+  /* ---------- Love message ---------- */
+  #messageLayer{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:3;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 1.8s ease;
+    padding: 6vh 5vw;
+  }
+  #messageLayer.show{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .message-card{
+    max-width: 760px;
+    width:100%;
+    text-align:center;
+    padding: clamp(1.6rem, 4vw, 3.2rem);
+    border-radius: 28px;
+    background: linear-gradient(160deg, rgba(58,21,36,.55), rgba(28,10,18,.65));
+    border: 1px solid rgba(232,192,125,.35);
+    box-shadow: 0 0 60px rgba(232,180,184,.15), 0 25px 60px rgba(0,0,0,.5);
+    backdrop-filter: blur(6px);
+    transform: translateY(40px) scale(.96);
+    opacity:0;
+    animation: cardIn 1.6s cubic-bezier(.2,.8,.2,1) forwards;
+    animation-delay: .3s;
+  }
+  @keyframes cardIn{
+    to{ transform: translateY(0) scale(1); opacity:1; }
+  }
+  .to-name{
+    font-family:'Great Vibes', cursive;
+    font-size: clamp(2.4rem, 7vw, 4rem);
+    color: var(--warm-gold);
+    text-shadow: 0 0 20px rgba(232,192,125,.5);
+    margin-bottom: .6rem;
+    opacity:0;
+    animation: lineIn 1s ease forwards;
+    animation-delay: .8s;
+  }
+  .line{
+    font-family:'Cormorant Garamond', serif;
+    font-size: clamp(1.05rem, 2.6vw, 1.45rem);
+    line-height: 1.9;
+    color: #ffe9ee;
+    font-weight: 500;
+    opacity:0;
+    animation: lineIn 1s ease forwards;
+  }
+  .line em{
+    font-style: italic;
+    color: var(--rose-gold);
+  }
+  .line.gold{ color: var(--warm-gold); }
+  .line:nth-of-type(1){ animation-delay: 1.2s; }
+  .line:nth-of-type(2){ animation-delay: 1.9s; }
+  .line:nth-of-type(3){ animation-delay: 2.6s; }
+  .line:nth-of-type(4){ animation-delay: 3.3s; }
+  .line:nth-of-type(5){ animation-delay: 4.0s; }
+  .line:nth-of-type(6){ animation-delay: 4.7s; }
+  @keyframes lineIn{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+  .signature{
+    margin-top: 1.8rem;
+    font-family:'Great Vibes', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    color: var(--rose-gold);
+    opacity:0;
+    animation: lineIn 1.2s ease forwards;
+    animation-delay: 5.6s;
+  }
+  .from-signature{
+    margin-top: .4rem;
+    font-family:'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1rem, 2.4vw, 1.25rem);
+    color: #ffe9ee;
+    opacity:0;
+    animation: lineIn 1.2s ease forwards;
+    animation-delay: 6.1s;
+  }
+  .hearts-row{
+    margin-top:1rem;
+    font-size:1.3rem;
+    opacity:0;
+    animation: lineIn 1.2s ease forwards;
+    animation-delay: 6.6s;
+    letter-spacing: 8px;
+  }
+
+  .replay-btn{
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    background: linear-gradient(135deg, var(--rose-gold), var(--deep-red));
+    color:#fff8f0;
+    border:none;
+    padding: .7rem 1.6rem;
+    border-radius: 999px;
+    font-family:'Poppins', sans-serif;
+    font-size: .85rem;
+    letter-spacing: .5px;
+    cursor:pointer;
+    box-shadow: 0 10px 25px rgba(168,50,74,.4);
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .8s ease;
+  }
+  .replay-btn.show{
+    opacity:1;
+    pointer-events:auto;
+    animation: lineIn 1s ease forwards;
+    animation-delay: 7.1s;
+  }
+
+  @media (max-width: 480px){
+    .message-card{ padding: 1.4rem 1.2rem; border-radius:20px; }
+    .line{ font-size:1rem; line-height:1.75; }
+  }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<div id="scene">
+
+  <div id="intro">
+    <div class="hero-balloon-wrap" id="heroBalloon">
+      <div class="hero-balloon">
+        <div class="body"></div>
+        <div class="shine"></div>
+        <div class="knot"></div>
+      </div>
+      <div class="hero-string"></div>
+    </div>
+    <div class="pop-label">Pop me 🎈</div>
+  </div>
+
+  <div id="floodLayer"></div>
+
+  <div id="messageLayer">
+    <div class="message-card">
+      <div class="to-name">My dearest Favour,</div>
+
+      <p class="line">From the moment your name first touched my life, it felt less like meeting someone new and more like <em>finally recognizing</em> a voice I'd always known.</p>
+
+      <p class="line">You are the quiet warmth in my ordinary days and the reason my heart learned to beat a little braver. Every laugh of yours rearranges something soft in me.</p>
+
+      <p class="line">I love you — not the easy kind of love that says nice things, but the kind that watches you sleep in worry, that prays for your peace before my own, that chooses you again on the hard days without needing to be asked.</p>
+
+      <p class="line gold">I dream, so often, of the day I get to call you <em>wife</em> — of building a home where your name is written into every wall, where your laughter is the first sound of every morning.</p>
+
+      <p class="line">You are not a chapter I'm passing through, Favour. You are the story I want to spend the rest of my life writing — with you, for you, because of you.</p>
+
+      <p class="line">So here is my heart, fully and unguarded: <em>be my forever.</em> Let me be yours.</p>
+
+      <div class="signature">Forever your love</div>
+      <div class="from-signature">From your lovely baby, Boluwatife</div>
+      <div class="hearts-row">💛 🌹 💍</div>
+    </div>
+  </div>
+
+  <button class="replay-btn" id="replayBtn">✨ Watch it again</button>
+
+</div>
+
+<script>
+(function(){
+  const intro = document.getElementById('intro');
+  const heroBalloon = document.getElementById('heroBalloon');
+  const scene = document.getElementById('scene');
+  const floodLayer = document.getElementById('floodLayer');
+  const messageLayer = document.getElementById('messageLayer');
+  const replayBtn = document.getElementById('replayBtn');
+  const starsWrap = document.getElementById('stars');
+
+  const balloonColors = [
+    { colors: ['#ff9fb8','#e8567f','#a8324a'], gold:false }, // pink/red
+    { colors: ['#ffd9a0','#f0a84e','#c9761f'], gold:true },  // gold
+    { colors: ['#e7b8ff','#b467e0','#7a2fa8'], gold:false }, // purple
+    { colors: ['#ff8fa3','#e0335f','#8f0f36'], gold:false }, // deep red
+    { colors: ['#ffe6c2','#e8c07d','#b98a3d'], gold:true },  // warm gold light
+    { colors: ['#ffc2d9','#e8b4b8','#c76b7d'], gold:false }, // rose gold
+    { colors: ['#c9a6ff','#9a5ce0','#5c1f9e'], gold:false }, // violet
+  ];
+
+  function makeStars(n){
+    for(let i=0;i<n;i++){
+      const s = document.createElement('div');
+      s.className='twinkle';
+      s.style.left = Math.random()*100+'%';
+      s.style.top = Math.random()*100+'%';
+      s.style.animationDelay = (Math.random()*3)+'s';
+      s.style.animationDuration = (2+Math.random()*3)+'s';
+      starsWrap.appendChild(s);
+    }
+  }
+  makeStars(70);
+
+  function randRange(a,b){ return a + Math.random()*(b-a); }
+
+  function popConfetti(x, y){
+    const ring = document.createElement('div');
+    ring.className='burst-ring';
+    ring.style.left = x+'px';
+    ring.style.top = y+'px';
+    scene.appendChild(ring);
+    setTimeout(()=> ring.remove(), 750);
+
+    const count = 26;
+    for(let i=0;i<count;i++){
+      const c = document.createElement('div');
+      c.className='confetti-burst';
+      const palette = balloonColors[Math.floor(Math.random()*balloonColors.length)];
+      c.style.background = palette.colors[Math.floor(Math.random()*palette.colors.length)];
+      c.style.left = x+'px';
+      c.style.top = y+'px';
+      const angle = (Math.PI*2)*(i/count) + randRange(-.2,.2);
+      const dist = randRange(120, 320);
+      const dx = Math.cos(angle)*dist;
+      const dy = Math.sin(angle)*dist;
+      const rot = randRange(0,720);
+      c.style.transition = 'transform 900ms cubic-bezier(.15,.7,.3,1), opacity 900ms ease';
+      scene.appendChild(c);
+      requestAnimationFrame(()=>{
+        c.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
+        c.style.opacity = '0';
+      });
+      setTimeout(()=> c.remove(), 950);
+    }
+  }
+
+  function createFloodBalloon(delay){
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    const palette = balloonColors[Math.floor(Math.random()*balloonColors.length)];
+    const size = randRange(46, 92);
+    b.style.width = size+'px';
+    b.style.height = (size*1.25)+'px';
+
+    const body = document.createElement('div');
+    body.className = 'b-body';
+    body.style.background = `radial-gradient(circle at 32% 28%, #fff 0%, ${palette.colors[0]} 22%, ${palette.colors[1]} 60%, ${palette.colors[2]} 100%)`;
+    const shine = document.createElement('div');
+    shine.className='b-shine';
+    const string = document.createElement('div');
+    string.className='b-string';
+    string.style.height = randRange(30,60)+'px';
+
+    b.appendChild(body);
+    b.appendChild(shine);
+    b.appendChild(string);
+
+    const startX = randRange(-5, 105);
+    const endX = startX + randRange(-18, 18);
+    const wobble = randRange(20, 60);
+    const riseDuration = randRange(4.5, 8);
+    const rotStart = randRange(-8,8);
+
+    b.style.left = startX+'vw';
+    b.style.transform = `translateY(0) rotate(${rotStart}deg)`;
+    b.style.opacity = '0';
+
+    floodLayer.appendChild(b);
+
+    let popped = false;
+    function popThisBalloon(){
+      if(popped) return;
+      popped = true;
+      const rect = b.getBoundingClientRect();
+      popConfetti(rect.left+rect.width/2, rect.top+rect.height/2);
+      b.style.transition = 'transform .15s ease, opacity .15s ease';
+      b.style.transform += ' scale(1.3)';
+      b.style.opacity='0';
+      setTimeout(()=> b.remove(), 200);
+    }
+    b.addEventListener('click', popThisBalloon);
+    b.addEventListener('touchstart', function(e){ e.preventDefault(); popThisBalloon(); }, {passive:false});
+
+    setTimeout(()=>{
+      b.style.transition = `transform ${riseDuration}s cubic-bezier(.3,.6,.4,1), opacity 1.2s ease`;
+      b.style.opacity='1';
+      b.style.transform = `translateY(-${window.innerHeight + 320}px) translateX(${endX-startX}vw) rotate(${randRange(-15,15)}deg)`;
+
+      // Gold balloons burst on their own partway through the rise — no click needed.
+      // Only gold ones do this; every other color keeps floating/drifting until clicked or it fades out.
+      if(palette.gold){
+        const autoPopAt = riseDuration * randRange(0.4, 0.7) * 1000;
+        setTimeout(()=>{ popThisBalloon(); }, autoPopAt);
+      }
+
+      setTimeout(()=>{
+        if(!popped){
+          b.style.transition = 'opacity 1s ease';
+          b.style.opacity = '0';
+          setTimeout(()=> b.remove(), 1000);
+        }
+      }, riseDuration*1000);
+    }, delay);
+  }
+
+  function unleashFlood(){
+    const totalBalloons = 55;
+    for(let i=0;i<totalBalloons;i++){
+      const delay = randRange(0, 2200);
+      setTimeout(()=> createFloodBalloon(0), delay);
+    }
+  }
+
+  function revealMessage(){
+    setTimeout(()=>{
+      messageLayer.classList.add('show');
+    }, 2600);
+    setTimeout(()=>{
+      replayBtn.classList.add('show');
+    }, 2700);
+  }
+
+  function popHeroBalloon(){
+    heroBalloon.style.pointerEvents = 'none';
+    const rect = heroBalloon.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top + rect.height/2;
+
+    popConfetti(cx, cy);
+
+    intro.classList.add('fade-out');
+    setTimeout(()=>{
+      intro.style.display = 'none';
+    }, 650);
+
+    unleashFlood();
+    revealMessage();
+  }
+
+  heroBalloon.addEventListener('click', popHeroBalloon);
+  heroBalloon.addEventListener('touchstart', function(e){
+    e.preventDefault();
+    popHeroBalloon();
+  }, {passive:false});
+
+  replayBtn.addEventListener('click', function(){
+    location.reload();
+  });
+})();
+</script>
+
+</body>
+</html>
